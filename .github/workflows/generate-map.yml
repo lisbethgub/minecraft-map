@@ -23,18 +23,23 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+        playwright install --with-deps
 
     - name: Generate map
       run: |
         python map_plot.py
 
-    - name: Commit & Push generated map
+    - name: Generate preview image
+      run: |
+        python generate_preview.py
+
+    - name: Commit & Push generated map + preview
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
-        git add index.html
-        git commit -m "🔄 auto: regenerate map on update" || echo "No changes to commit"
+        git add index.html preview.png
+        git commit -m "🔄 auto: regenerate map and preview" || echo "No changes to commit"
         git push
