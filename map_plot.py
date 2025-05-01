@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 import json
 import base64
 import os
+from typing import List, Dict
 
 # Загрузка данных
 with open("data/places.json", encoding="utf-8") as f:
@@ -15,7 +16,7 @@ with open("data/colors.json", encoding="utf-8") as f:
     biome_colors = json.load(f)
 
 # Чекаем корректны ли данные
-def validate_data(data, source_name):
+def validate_data(data: List[Dict], source_name: str) -> None:
     required_fields = ["Name", "X", "Z", "Biome", "Type"]
     for row in data:
         for field in required_fields:
@@ -38,7 +39,7 @@ df_all["Color"] = df_all["Biome"].apply(lambda b: biome_colors.get(b, "#aaaaaa")
 # Создаём график
 fig = go.Figure()
 
-def encode_image(image_file):
+def encode_image(image_file: str) -> str:
     with open(image_file, "rb") as f:
         return "data:image/png;base64," + base64.b64encode(f.read()).decode()
 
