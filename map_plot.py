@@ -14,6 +14,17 @@ with open("data/stations.json", encoding="utf-8") as f:
 with open("data/colors.json", encoding="utf-8") as f:
     biome_colors = json.load(f)
 
+# Чекаем корректны ли данные
+def validate_data(data, source_name):
+    required_fields = ["Name", "X", "Z", "Biome", "Type"]
+    for row in data:
+        for field in required_fields:
+            if field not in row:
+                raise ValueError(f"⛔ Отсутствует поле '{field}' в {source_name}: {row}")
+
+validate_data(places, "places.json")
+validate_data(stations, "stations.json")
+
 # Преобразуем в DataFrame
 df_places = pd.DataFrame(places)
 df_stations = pd.DataFrame(stations)
@@ -56,7 +67,25 @@ for _, row in df_all.iterrows():
             )
         )
     else:
-        print(f"⚠️ Icon is not found: {icon_path}")
+        # Используем иконку "вопрос" как заглушку
+        fallback_icon_path = "icons/missing.png"
+        if os.path.exists(fallback_icon_path):
+            fig.add_layout_image(
+                dict(
+                    source=encode_image(fallback_icon_path),
+                    x=x,
+                    y=z,
+                    xref="x",
+                    yref="y",
+                    sizex=40,
+                    sizey=40,
+                    xanchor="center",
+                    yanchor="middle",
+                    layer="above"
+                )
+            )
+        else:
+            print(f"⚠️ Icon not found: {icon_path}, and fallback icon missing too: {fallback_icon_path}")
 
 
 # Свечение + подписи
