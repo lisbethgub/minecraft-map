@@ -1,6 +1,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 import json
+import base64
+import os
 
 # Загрузка данных
 with open("data/places.json", encoding="utf-8") as f:
@@ -25,6 +27,38 @@ df_all["Color"] = df_all["Biome"].apply(lambda b: biome_colors.get(b, "#aaaaaa")
 # Создаём график
 fig = go.Figure()
 
+
+
+def encode_image(image_file):
+    with open(image_file, "rb") as f:
+        return "data:image/png;base64," + base64.b64encode(f.read()).decode()
+
+# Добавим иконки
+for _, row in df_all.iterrows():
+    x, z = row["X"], row["Z"]
+    label = row["Name"]
+    icon_type = row["Type"].lower()
+    icon_path = f"icons/{icon_type}.png"
+
+    if os.path.exists(icon_path):
+        fig.add_layout_image(
+            dict(
+                source=encode_image(icon_path),
+                x=x,
+                y=z,
+                xref="x",
+                yref="y",
+                sizex=40,
+                sizey=40,
+                xanchor="center",
+                yanchor="middle",
+                layer="above"
+            )
+        )
+    else:
+        print(f"⚠️ Icon is not found: {icon_path}")
+
+
 # Свечение + подписи
 for _, row in df_all.iterrows():
     x, z, name, biome, color = row["X"], row["Z"], row["Name"], row["Biome"], row["Color"]
@@ -34,12 +68,13 @@ for _, row in df_all.iterrows():
     fig.add_trace(go.Scatter(
         x=[x], y=[z],
         mode="markers+text",
-        marker=dict(size=12, color=color, symbol="circle"),
+        marker=dict(size=17, color=color, symbol="circle"),
         text=[name],
         textposition="top center",
         name=name,
         hovertemplate=f"<b>{name}</b><br>{biome}<br>X: {x}, Z: {z}<extra></extra>"
-    ))
+    )
+    )
 
 # Линия между станциями
 fig.add_trace(go.Scatter(
@@ -64,4 +99,6 @@ fig.update_layout(
 )
 
 # Сохраняем в HTML
-fig.write_html("minecraft_map.html")
+fig.write_html("index.html")
+
+
