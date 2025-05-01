@@ -28,7 +28,7 @@ jobs:
       run: |
         python map_plot.py
 
-        - name: Commit & Push generated map
+    - name: Commit & Push generated map
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
@@ -38,4 +38,3 @@ jobs:
         git add index.html
         git commit -m "🔄 auto: regenerate map on update" || echo "No changes to commit"
         git push
-
