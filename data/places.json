@@ -2,6 +2,7 @@
     {"Name": "Home", "X": 1750, "Z": -275, "Biome": "Plains", "Type": "base"},
     {"Name": "Portal", "X": 2790, "Z": 200, "Biome": "Plains", "Type": "portal"},
     {"Name": "Shipwreck", "X": 2820, "Z": 430, "Biome": "Beach", "Type": "shipwreck"},
-    {"Name": "Village", "X": 3035, "Z": 80, "Biome": "Plains", "Type": "village"}
+    {"Name": "Village", "X": 3035, "Z": 80, "Biome": "Plains", "Type": "village"},
+    {"Name": "Center", "X": 0, "Z": 0, "Biome": "Plains", "Type": "randompoint"}
   ]
   
