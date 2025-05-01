@@ -38,8 +38,6 @@ df_all["Color"] = df_all["Biome"].apply(lambda b: biome_colors.get(b, "#aaaaaa")
 # Создаём график
 fig = go.Figure()
 
-
-
 def encode_image(image_file):
     with open(image_file, "rb") as f:
         return "data:image/png;base64," + base64.b64encode(f.read()).decode()
