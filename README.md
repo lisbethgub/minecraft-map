@@ -2,6 +2,9 @@
 
 Интерактивная визуализация важных мест на нашем сервере Minecraft.
 
+Превью:
+![preview](preview.png)
+
 ## Как запустить
 
 1. Установи зависимости:
@@ -24,4 +27,4 @@ python map_plot.py
 1. Добавь её в `places.json`
 2. Сделай pull request ✅
 
-![preview](preview.png)
+
