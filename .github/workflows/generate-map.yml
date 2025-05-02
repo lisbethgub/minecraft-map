@@ -40,6 +40,12 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+
+        git fetch origin preview-output || echo "No remote branch yet"
+        git checkout -B preview-output
+
         git add index.html preview.png
         git commit -m "🔄 auto: regenerate map and preview" || echo "No changes to commit"
-        git push
+
+        git push origin preview-output
+
