@@ -33,7 +33,7 @@ jobs:
       run: |
         python generate_preview.py
 
-     - name: Commit & Push generated map + preview
+    - name: Commit & Push generated map + preview
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
