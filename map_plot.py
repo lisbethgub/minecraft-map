@@ -1,9 +1,18 @@
 import pandas as pd
 import plotly.graph_objects as go
 import json
-import base64
-import os
 from typing import List, Dict
+
+icon_by_type = {
+    "station": "🚉",
+    "village": "🏘️",   
+    "portal": "🌀",
+    "missing": "❓",
+    "base": "🛏️",
+    "point": "⬛",
+    "shipwreck": "⚓",
+    "trialchambers": "🗝️"
+}
 
 # Загрузка данных
 with open("data/places.json", encoding="utf-8") as f:
@@ -31,7 +40,7 @@ df_places = pd.DataFrame(places)
 df_stations = pd.DataFrame(stations)
 
 # Объединяем всё в один фрейм для отрисовки точек
-df_all = pd.concat([df_places, df_stations], ignore_index=True)
+df_all = pd.concat([df_stations, df_places], ignore_index=True)
 
 # Добавим цвет
 df_all["Color"] = df_all["Biome"].apply(lambda b: biome_colors.get(b, "#aaaaaa"))
@@ -39,70 +48,6 @@ df_all["Color"] = df_all["Biome"].apply(lambda b: biome_colors.get(b, "#aaaaaa")
 # Создаём график
 fig = go.Figure()
 
-def encode_image(image_file: str) -> str:
-    with open(image_file, "rb") as f:
-        return "data:image/png;base64," + base64.b64encode(f.read()).decode()
-
-# Добавим иконки
-for _, row in df_all.iterrows():
-    x, z = row["X"], row["Z"]
-    label = row["Name"]
-    icon_type = row["Type"].lower()
-    icon_path = f"icons/{icon_type}.png"
-
-    if os.path.exists(icon_path):
-        fig.add_layout_image(
-            dict(
-                source=encode_image(icon_path),
-                x=x,
-                y=z,
-                xref="x",
-                yref="y",
-                sizex=40,
-                sizey=40,
-                xanchor="center",
-                yanchor="middle",
-                layer="above"
-            )
-        )
-    else:
-        # Используем иконку "вопрос" как заглушку
-        fallback_icon_path = "icons/missing.png"
-        if os.path.exists(fallback_icon_path):
-            fig.add_layout_image(
-                dict(
-                    source=encode_image(fallback_icon_path),
-                    x=x,
-                    y=z,
-                    xref="x",
-                    yref="y",
-                    sizex=40,
-                    sizey=40,
-                    xanchor="center",
-                    yanchor="middle",
-                    layer="above"
-                )
-            )
-        else:
-            print(f"⚠️ Icon not found: {icon_path}, and fallback icon missing too: {fallback_icon_path}")
-
-
-# Свечение + подписи
-for _, row in df_all.iterrows():
-    x, z, name, biome, color = row["X"], row["Z"], row["Name"], row["Biome"], row["Color"]
-
-    fig.add_trace(go.Scatter(x=[x], y=[z], mode="markers", marker=dict(size=60, color=color, opacity=0.1), showlegend=False, hoverinfo="skip"))
-    fig.add_trace(go.Scatter(x=[x], y=[z], mode="markers", marker=dict(size=30, color=color, opacity=0.3), showlegend=False, hoverinfo="skip"))
-    fig.add_trace(go.Scatter(
-        x=[x], y=[z],
-        mode="markers+text",
-        marker=dict(size=17, color=color, symbol="circle"),
-        text=[name],
-        textposition="top center",
-        name=name,
-        hovertemplate=f"<b>{name}</b><br>{biome}<br>X: {x}, Z: {z}<extra></extra>"
-    )
-    )
 
 # Линия между станциями
 fig.add_trace(go.Scatter(
@@ -114,6 +59,59 @@ fig.add_trace(go.Scatter(
     name="Train route",
     hoverinfo="skip"
 ))
+
+for _, row in df_all.iterrows():
+    x, z = row["X"], row["Z"]
+    name = row["Name"]
+    biome = row["Biome"]
+    color = row["Color"]
+    emoji = icon_by_type.get(row["Type"].lower(), icon_by_type["missing"])
+
+    # Название сверху
+    fig.add_trace(go.Scatter(
+        x=[x], y=[z + 10],
+        mode = "text",
+        text=[name],
+        textposition="top center",
+        textfont=dict(size=14, color='black'),
+        showlegend=False,
+        hoverinfo="skip"
+    ))
+
+    #  Свечение (двойной маркер)
+    fig.add_trace(go.Scatter(
+        x=[x], y=[z],
+        mode="markers",
+        marker=dict(size=10, color=color, opacity=1),
+        name=f"{emoji} {name}",
+        hovertemplate=f"<b>{name}</b><br>{biome}<br>X: {x}, Z: {z}<extra></extra>"
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=[x], y=[z], 
+        mode="markers", 
+        marker=dict(size=30, color=color, opacity=0.3),
+        showlegend=False,
+        hoverinfo="skip"
+    ))
+
+
+for _, row in df_all.iterrows():
+    x, z = row["X"], row["Z"]
+    name = row["Name"]
+    biome = row["Biome"]
+    color = row["Color"]
+    emoji = icon_by_type.get(row["Type"].lower(), icon_by_type["missing"])
+
+     # Эмодзи по центру
+    fig.add_trace(go.Scatter( x=[x], y=[z],
+        mode="text",
+        text=[emoji],
+        textposition="middle center",
+        textfont=dict(size=15),
+        showlegend=False,
+        hoverinfo="skip"
+    ))
 
 # Настройки графика
 fig.update_layout(
