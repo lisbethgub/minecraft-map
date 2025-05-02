@@ -1,4 +1,5 @@
 [
-  {"Name": "Trial Chambers", "X": 2985, "Z": 215, "Biome": "Plains", "Type": "trialchambers"},
-  {"Name": "Random point", "X": 2275, "Z": 215, "Biome": "Taiga", "Type": "randompoint"}
+  {"Name": " ", "X": 2975, "Z": 215, "Biome": "Plains", "Type": "station"},
+  {"Name": " ", "X": 1785, "Z": 215, "Biome": "Taiga", "Type": "point"},
+  {"Name": " ", "X": 1785, "Z": -275, "Biome": "Plains", "Type": "station"}
 ]
