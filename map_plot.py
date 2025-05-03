@@ -118,7 +118,7 @@ fig.update_layout(
     title="Minecraft map",
     xaxis_title="X",
     yaxis_title="Z",
-    width=900,
+    width=1500,
     height=700,
     dragmode="zoom",
     hovermode="closest"
