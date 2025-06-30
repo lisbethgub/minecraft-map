@@ -1,9 +1,15 @@
-[
+[ 
+  {"Name": "Spawm", "X": 210, "Z": 220, "Biome": "Plains", "Type": "smth"},
   {"Name": "Home", "X": 1750, "Z": -275, "Biome": "Plains", "Type": "base"},
   {"Name": "Portal", "X": 1655, "Z": -400, "Biome": "Plains", "Type": "portal"},
+  {"Name": "недостроенный Portal", "X": 1305, "Z": -280, "Biome": "Snowy plains", "Type": "portal"},
+  {"Name": "недостроенный Portal", "X": 676, "Z": -453, "Biome": "Snowy plains", "Type": "portal"},
+  {"Name": "Иглу", "X": 610, "Z": -300, "Biome": "Snowy plains", "Type": "base"},
   {"Name": "Village", "X": 1340, "Z": -450, "Biome": "Snowy plains", "Type": "village"},
   {"Name": "Portal", "X": 2790, "Z": 200, "Biome": "Plains", "Type": "portal"},
   {"Name": "Shipwreck", "X": 2820, "Z": 430, "Biome": "Beach", "Type": "shipwreck"},
   {"Name": "Village", "X": 3035, "Z": 80, "Biome": "Plains", "Type": "village"},
-  {"Name": "Trial Chambers", "X": 3000, "Z": 215, "Biome": "Plains", "Type": "trialchambers"}
+  {"Name": "Trial Chambers", "X": 3000, "Z": 215, "Biome": "Plains", "Type": "trialchambers"},
+  {"Name": "Ocean Monument", "X": 1645, "Z": -895, "Biome": "Deep cold ocean", "Type": "oceanmonument"}
 ]
+ 

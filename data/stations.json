@@ -1,5 +1,5 @@
 [
   {"Name": " ", "X": 2975, "Z": 215, "Biome": "Plains", "Type": "station"},
-  {"Name": " ", "X": 1785, "Z": 215, "Biome": "Frozen river", "Type": "point"},
+  {"Name": " ", "X": 1785, "Z": 215, "Biome": "Frozen river", "Type": "station"},
   {"Name": " ", "X": 1785, "Z": -275, "Biome": "Plains", "Type": "station"}
 ]
