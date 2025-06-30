@@ -12,7 +12,11 @@ icon_by_type = {
     "point": "⬛",
     "shipwreck": "⚓",
     "trialchambers": "🗝️",
-    "oceanmonument": "🧿"
+    "oceanmonument": "🐡",
+    "igloo": "❄️",
+    "spawn": "🌱",
+    "woodlandmansion": "🏚️",
+    "bastion": "🔥"
 }
 
 
@@ -116,8 +120,8 @@ def main() -> None:
         title="Minecraft map",
         xaxis_title="X",
         yaxis_title="Z",
-        width=1500,
-        height=700,
+        width=2000,
+        height=2000,
         dragmode="zoom",
         hovermode="closest"
     )
