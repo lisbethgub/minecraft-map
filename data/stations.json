@@ -1,12 +1,12 @@
 [
-  {"Name": "Ispitaniya", "X": 2975, "Z": 215, "Biome": "Plains", "Type": "station"},
+  {"Name": "", "X": 2975, "Z": 215, "Biome": "Plains", "Type": "station"},
   {"Name": "razvilka", "X": 1742, "Z": 215, "Biome": "Snowy plains", "Type": "station"},
   {"Name": " ", "X": 1742, "Z": -135, "Biome": "Forest", "Type": "point"},
   {"Name": " ", "X": 1716, "Z": -135, "Biome": "Forest", "Type": "point"},
-  {"Name": "Home", "X": 1716, "Z": -350, "Biome": "Plains", "Type": "base"},  
+  {"Name": "Home", "X": 1716, "Z": -350, "Biome": "Plains", "Type": "station"},  
   {"Name": " ", "X": 1716, "Z": -135, "Biome": "Forest", "Type": "point"},
   {"Name": " ", "X": 1742, "Z": -135, "Biome": "Forest", "Type": "point"},
-   {"Name": "razvilka", "X": 1742, "Z": 215, "Biome": "Snowy plains", "Type": "station"},
+  {"Name": "", "X": 1742, "Z": 215, "Biome": "Snowy plains", "Type": "station"},
   {"Name": " ", "X": 1742, "Z": 1360, "Biome": "Snowy plains", "Type": "point"},
   {"Name": "Portal", "X": 1955, "Z": 1360, "Biome": "Taiga", "Type": "station"}
 ]

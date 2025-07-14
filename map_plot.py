@@ -8,42 +8,23 @@ icon_by_type = {
     "village": "🏘️",
     "portal": "🌀",
     "missing": "❓",
-    "base": "🛏️",
-    "point": "⬛",
+    "base": "🏯",
+    "point": "",
     "shipwreck": "⚓",
     "trialchambers": "🗝️",
     "oceanmonument": "🐡",
     "igloo": "❄️",
     "spawn": "🌱",
     "woodlandmansion": "🏚️",
-    "bastion": "🌆", 
+    "bastion": "🌆",
     "lava": "🔥",
-    "pumpkins" : "🎃"
+    "pumpkins": "🎃"
 }
 
 
-def load_json(filepath: str):
-    import json, pathlib, textwrap
-    try:
-        with open(filepath, encoding="utf-8") as f:
-            return json.load(f)
-    except json.JSONDecodeError as e:
-        # Читаем содержимое, чтобы показать фрагмент вокруг ошибки
-        text = pathlib.Path(filepath).read_text(encoding="utf-8", errors="replace")
-        lines = text.splitlines()
-        start = max(e.lineno - 3, 0)
-        end   = min(e.lineno + 2, len(lines))
-        snippet = "\n".join(
-            f"{i+1:>4}{' →' if i+1==e.lineno else '  '} {lines[i]}"
-            for i in range(start, end)
-        )
-        msg = (
-            f"\n⛔ {filepath}: {e.msg} "
-            f"(строка {e.lineno}, столбец {e.colno})\n"
-            f"{'-'*60}\n{snippet}\n{'-'*60}"
-        )
-        raise SystemExit(msg) from None
-
+def load_json(filepath: str) -> List[Dict]:
+    with open(filepath, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def validate_data(data: List[Dict], source_name: str) -> None:
@@ -60,68 +41,63 @@ def add_point_trace(fig: go.Figure, row: Dict, icon_by_type: Dict[str, str]) -> 
     biome = row["Biome"]
     color = row["Color"]
     emoji = icon_by_type.get(row["Type"].lower(), icon_by_type["missing"])
+    radius = 80  # радиус биомного круга
 
-    # Label above
+    # Цветной круг (биом)
+    fig.add_shape(
+        type="circle",
+        xref="x", yref="y",
+        x0=x - radius, y0=z - radius,
+        x1=x + radius, y1=z + radius,
+        line=dict(width=0),
+        fillcolor=color,
+        opacity=0.4,
+        layer="below"
+    )
+
+    # Эмодзи в центре
     fig.add_trace(go.Scatter(
-        x=[x], y=[z + 10],
+        x=[x],
+        y=[z],
         mode="text",
-        text=[name],
-        textposition="top center",
-        textfont=dict(size=7, color='black'),
-        showlegend=False,
-        hoverinfo="skip"
-    ))
-
-    # Main marker
-    fig.add_trace(go.Scatter(
-        x=[x], y=[z],
-        mode="markers",
-        marker=dict(size=10, color=color, opacity=1),
+        text=[emoji],
+        textfont=dict(size=14),
         name=f"{emoji} {name}",
         hovertemplate=f"<b>{name}</b><br>{biome}<br>X: {x}, Z: {z}<extra></extra>"
     ))
 
-    # Glow
+    # Название 
     fig.add_trace(go.Scatter(
-        x=[x], y=[z],
-        mode="markers",
-        marker=dict(size=30, color=color, opacity=0.3),
-        showlegend=False,
-        hoverinfo="skip"
-    ))
-
-    # Emoji in center
-    fig.add_trace(go.Scatter(
-        x=[x], y=[z],
+        x=[x],
+        y=[z - 40],
         mode="text",
-        text=[emoji],
-        textposition="middle center",
-        textfont=dict(size=10),
+        text=[name],
+        textfont=dict(size=10, color="black"),
         showlegend=False,
         hoverinfo="skip"
     ))
 
 
 def main() -> None:
-    # Load data
+    # Загрузка данных
     places = load_json("data/places.json")
     stations = load_json("data/stations.json")
     biome_colors = load_json("data/colors.json")
 
-    # Validate data
+    # Проверка данных
     validate_data(places, "places.json")
     validate_data(stations, "stations.json")
 
-    # Combine data
+    # Объединение
     df_places = pd.DataFrame(places)
     df_stations = pd.DataFrame(stations)
     df_all = pd.concat([df_stations, df_places], ignore_index=True)
     df_all["Color"] = df_all["Biome"].apply(lambda b: biome_colors.get(b, "#aaaaaa"))
 
-    # Create figure
+    # Создание карты
     fig = go.Figure()
 
-    # Train route
+    # Маршрут поезда
     fig.add_trace(go.Scatter(
         x=df_stations["X"],
         y=df_stations["Z"],
@@ -132,11 +108,11 @@ def main() -> None:
         hoverinfo="skip"
     ))
 
-    # Add points
+    # Добавление точек
     for _, row in df_all.iterrows():
         add_point_trace(fig, row, icon_by_type)
 
-    # Layout
+    # Настройки графика
     fig.update_layout(
         title="Minecraft map",
         xaxis_title="X",
@@ -144,12 +120,13 @@ def main() -> None:
         width=1000,
         height=1000,
         dragmode="zoom",
-        hovermode="closest",
-        # plot_bgcolor="white",
-        # paper_bgcolor="white"
+        hovermode="closest"
     )
 
-    # Save as HTML
+    # 👇 фиксированное соотношение осей — настоящие круги
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+
+    # Сохранение
     fig.write_html("index.html")
     print("✅ Map saved to 'index.html'")
 
