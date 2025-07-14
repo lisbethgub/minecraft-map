@@ -16,6 +16,6 @@
   {"Name": "Nether Wastes", "X": -175, "Z": -95, "Biome": "Nether wastes", "Type": "bastion"},
   {"Name": "Lava", "X": 1757, "Z": 1324, "Biome": "Snowy taiga", "Type": "lava"},
   {"Name": "Lava", "X": 1720, "Z": 817, "Biome": "Snowy taiga", "Type": "lava"},
-  {"Name": "Pumpkins", "X": 1690, "Z": 600, "Biome": "Snowy taiga", "Type": "pumpkins"}
+  {"Name": "", "X": 1690, "Z": 600, "Biome": "Snowy taiga", "Type": "pumpkins"}
 ]
  
