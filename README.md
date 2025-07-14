@@ -3,7 +3,8 @@
 Интерактивная визуализация важных мест на нашем сервере Minecraft.
 
 Превью:
-![preview](preview.png)
+![preview](https://raw.githubusercontent.com/lisbethgub/minecraft-map/main/preview.png?nocache)
+
 
 ## Как запустить
 
