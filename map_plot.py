@@ -16,7 +16,9 @@ icon_by_type = {
     "igloo": "❄️",
     "spawn": "🌱",
     "woodlandmansion": "🏚️",
-    "bastion": "🔥"
+    "bastion": "🌆", 
+    "lava": "🔥",
+    "pumpkins" : "🎃"
 }
 
 
@@ -46,7 +48,7 @@ def add_point_trace(fig: go.Figure, row: Dict, icon_by_type: Dict[str, str]) -> 
         mode="text",
         text=[name],
         textposition="top center",
-        textfont=dict(size=14, color='black'),
+        textfont=dict(size=7, color='black'),
         showlegend=False,
         hoverinfo="skip"
     ))
@@ -75,7 +77,7 @@ def add_point_trace(fig: go.Figure, row: Dict, icon_by_type: Dict[str, str]) -> 
         mode="text",
         text=[emoji],
         textposition="middle center",
-        textfont=dict(size=15),
+        textfont=dict(size=10),
         showlegend=False,
         hoverinfo="skip"
     ))
@@ -120,10 +122,12 @@ def main() -> None:
         title="Minecraft map",
         xaxis_title="X",
         yaxis_title="Z",
-        width=2000,
-        height=2000,
+        width=1000,
+        height=1000,
         dragmode="zoom",
-        hovermode="closest"
+        hovermode="closest",
+        # plot_bgcolor="white",
+        # paper_bgcolor="white"
     )
 
     # Save as HTML
