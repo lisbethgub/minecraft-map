@@ -6,6 +6,7 @@ on:
       - 'data/**.json'
       - 'map_plot.py'
       - 'requirements.txt'
+      - 'generate_preview.py'   # добавлено
 
 jobs:
   build:
@@ -25,12 +26,19 @@ jobs:
         pip install -r requirements.txt
         playwright install --with-deps
 
+    - name: Ensure places.json exists
+      run: |
+        mkdir -p data
+        if [ ! -f data/places.json ]; then echo "[]" > data/places.json; fi
+
     - name: Generate map
       run: |
+        set -e
         python map_plot.py
 
     - name: Generate preview image
       run: |
+        set -e
         python generate_preview.py
 
     - name: Commit & Push generated map + preview
@@ -42,4 +50,10 @@ jobs:
         git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
         git add index.html preview.png
         git commit -m "🔄 auto: regenerate map and preview" || echo "No changes to commit"
-        git push
+        git push || echo "Nothing to push"
+
+    - name: Upload preview.png (if commit skipped)
+      uses: actions/upload-artifact@v3
+      with:
+        name: preview
+        path: preview.png
