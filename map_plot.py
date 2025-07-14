@@ -22,9 +22,28 @@ icon_by_type = {
 }
 
 
-def load_json(filepath: str) -> List[Dict]:
-    with open(filepath, encoding="utf-8") as f:
-        return json.load(f)
+def load_json(filepath: str):
+    import json, pathlib, textwrap
+    try:
+        with open(filepath, encoding="utf-8") as f:
+            return json.load(f)
+    except json.JSONDecodeError as e:
+        # Читаем содержимое, чтобы показать фрагмент вокруг ошибки
+        text = pathlib.Path(filepath).read_text(encoding="utf-8", errors="replace")
+        lines = text.splitlines()
+        start = max(e.lineno - 3, 0)
+        end   = min(e.lineno + 2, len(lines))
+        snippet = "\n".join(
+            f"{i+1:>4}{' →' if i+1==e.lineno else '  '} {lines[i]}"
+            for i in range(start, end)
+        )
+        msg = (
+            f"\n⛔ {filepath}: {e.msg} "
+            f"(строка {e.lineno}, столбец {e.colno})\n"
+            f"{'-'*60}\n{snippet}\n{'-'*60}"
+        )
+        raise SystemExit(msg) from None
+
 
 
 def validate_data(data: List[Dict], source_name: str) -> None:

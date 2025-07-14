@@ -1,6 +1,6 @@
 [ 
   {"Name": "Spawm", "X": 210, "Z": 220, "Biome": "Plains", "Type": "spawn"},
-  ## // {"Name": "Home", "X": 1750, "Z": -275, "Biome": "Plains", "Type": "base"},
+  {"Name": "Home", "X": 1750, "Z": -275, "Biome": "Plains", "Type": "base"},
   {"Name": "Portal", "X": 1655, "Z": -400, "Biome": "Plains", "Type": "portal"},
   {"Name": "недостроенный Portal", "X": 1305, "Z": -280, "Biome": "Snowy plains", "Type": "portal"},
   {"Name": "недостроенный Portal", "X": 676, "Z": -453, "Biome": "Snowy plains", "Type": "portal"},
@@ -17,7 +17,5 @@
   {"Name": "Lava", "X": 1757, "Z": 1324, "Biome": "Snowy taiga", "Type": "lava"},
   {"Name": "Lava", "X": 1720, "Z": 817, "Biome": "Snowy taiga", "Type": "lava"},
   {"Name": "Pumpkins", "X": 1690, "Z": 600, "Biome": "Snowy taiga", "Type": "pumpkins"}
-
-  
 ]
  
